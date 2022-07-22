@@ -1,0 +1,7 @@
+interface MenuCollect {
+
+}
+
+class IndexModel {
+
+}

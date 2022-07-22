@@ -1,0 +1,32 @@
+{
+  "name": "drink-js",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "node dev/ts-dev-server.js",
+    "build": "node dev/ts-build-script.js",
+    "debug": "tsc --outDir ./debug && node ./debug/drink.js"
+  },
+  "main": "index.js",
+  "author": "DISHUYL",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/ejs": "^3.1.0",
+    "@types/multiparty": "^0.0.33",
+    "@types/mysql": "^2.15.21",
+    "@types/node": "^17.0.21",
+    "@typescript-eslint/eslint-plugin": "^5.14.0",
+    "@typescript-eslint/parser": "^5.14.0",
+    "axios": "^0.26.0",
+    "ejs": "^3.1.6",
+    "eslint": "6.7.2",
+    "http": "^0.0.1-security",
+    "multiparty": "^4.2.3",
+    "mysql": "^2.18.1",
+    "typescript": "^4.6.2",
+    "zlib": "^1.0.5"
+  },
+  "dependencies": {
+    "uglify-js": "^3.16.2"
+  }
+}
