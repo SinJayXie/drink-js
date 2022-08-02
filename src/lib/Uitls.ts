@@ -20,6 +20,12 @@ const getRouteArgs = function (route: string): RouteArgsData {
     return ret;
 };
 
+const getRunningEnvironment = function (): string {
+    if(process.argv.includes('--development')) return 'dev';
+    if(process.argv.includes('--debug')) return 'debug';
+    return 'prod';
+};
+
 const print_warn = function (msg: string) {
     console.log('\x1B[33m' + msg + '\x1B[39m');
 };
@@ -30,18 +36,22 @@ const print_error = function (msg: string) {
 
 const createHttpResponse = async function (req: IncomingMessage, res: ServerResponse): Promise<DrinkResponse> {
     const route = getRouteArgs(req.url);
+    const body = await createBody(req);
     return {
         request: req,
         response: res,
         route,
-        drink: new DrinkBase(req, res),
-        body: await createBody(req),
+        drink: new DrinkBase(req, res, route, body, getRunningEnvironment()),
+        body,
         query: route.query
     };
 };
 
 const ConversionBuffer = function (data: any): Buffer {
     let ret: Buffer = Buffer.from('');
+    if(data instanceof Buffer) {
+        return data;
+    }
     switch (typeof data) {
         case 'bigint':
         case 'number':
@@ -78,5 +88,6 @@ export {
     getRouteArgs,
     createHttpResponse,
     ConversionBuffer,
+    getRunningEnvironment,
     stout
 };

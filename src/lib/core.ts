@@ -3,6 +3,7 @@ import Router from './Router';
 import { DrinkJsConfig } from '../../index';
 const router = new Router();
 import middlewares from '../Middleware/Loader';
+
 const createServer = function (config: DrinkJsConfig) {
     const app = http.createServer(async (req, res) => {
         if(Array.isArray(middlewares)) {
@@ -12,7 +13,7 @@ const createServer = function (config: DrinkJsConfig) {
                         if(index === middlewares.length - 1) {
                             const isNext = await new Promise((resolve) => {
                                 const time: any = timeout(resolve);
-                                middlewares[index].app(req, res, next(resolve,time));
+                                middlewares[index].app(req, res, next(resolve, time));
                             });
                             if(isNext) {
                                 await router.match(req, res);

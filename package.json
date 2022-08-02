@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "node dev/ts-dev-server.js",
     "build": "node dev/ts-build-script.js",
-    "debug": "tsc --outDir ./debug && node ./debug/drink.js"
+    "debug": "tsc --outDir ./debug && node ./debug/drink.js --debug"
   },
   "main": "index.js",
   "author": "DISHUYL",
@@ -18,7 +18,7 @@
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
     "axios": "^0.26.0",
-    "ejs": "^3.1.6",
+    "ejs": "^3.1.8",
     "eslint": "6.7.2",
     "http": "^0.0.1-security",
     "multiparty": "^4.2.3",
@@ -27,6 +27,9 @@
     "zlib": "^1.0.5"
   },
   "dependencies": {
-    "uglify-js": "^3.16.2"
+    "@types/uuid": "^8.3.4",
+    "gzip": "^0.1.0",
+    "uglify-js": "^3.16.2",
+    "uuid": "^8.3.2"
   }
 }

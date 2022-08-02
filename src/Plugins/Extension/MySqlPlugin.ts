@@ -13,11 +13,16 @@ class MySqlPlugin extends PluginBase {
     }
     public query = (sql: string, query?: any[]): Promise<any[] | Record<any, any> | unknown> => {
         this.table = '';
-        console.log('[MySql Plugin]: Query: ' + sql);
+        console.log('[MySql Plugin]: Query -> ' + sql);
         return new Promise((resolve,reject) => {
             this.pool.query(sql, query, function (err, results, fields) {
                 if(err) {
-                    reject(err);
+                    if(err.errno.toString() === 'ECONNREFUSED') {
+                        reject(new Error('[MySql Plugin]: Connect MySql failed.'));
+                    } else {
+                        reject(err);
+                    }
+
                 } else {
                     resolve(results);
                 }

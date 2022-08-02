@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import controllers from './Controller';
 import * as DrinkJs from './DrinkJs';
 import * as utils from './Uitls';
-import { ConversionBuffer } from './Uitls';
+
 class Router {
     private readonly routers: Map<any, any>;
 
@@ -21,6 +21,7 @@ class Router {
 
     public async match(req: IncomingMessage, res: ServerResponse) {
         try {
+            res.setHeader('Content-Type', 'application/json');
             const newResponse = await utils.createHttpResponse(req, res);
             if (this.routers.has(newResponse.route.controller)) {
                 const controller = this.routers.get(newResponse.route.controller);
@@ -30,7 +31,7 @@ class Router {
                     if(typeof cb === 'function') {
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
-                        const buffer = ConversionBuffer(await cb());
+                        const buffer = utils.ConversionBuffer(await cb());
                         res.end(buffer);
                         return true;
                     }
@@ -44,7 +45,6 @@ class Router {
                 return true;
             }
             res.statusCode = 404;
-            res.setHeader('Content-Type', 'application/json');
             res.end(utils.ConversionBuffer({
                 code: 404,
                 msg: '404 not found',
@@ -52,9 +52,17 @@ class Router {
                 time: Date.now()
             }));
         } catch (e) {
-            utils.stout.print_error(e.stack);
-            res.statusCode = 500;
-            res.end(e.stack);
+            if(e.message !== 'USER_DEFINE_RESPONSE') {
+                utils.stout.print_error(e.stack);
+                res.statusCode = 500;
+                res.end(utils.ConversionBuffer({
+                    code: res.statusCode,
+                    msg_: e.message,
+                    msg: 'Server Error',
+                    success: false,
+                    time: Date.now()
+                }));
+            }
         }
 
     }
